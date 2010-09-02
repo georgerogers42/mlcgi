@@ -4,6 +4,7 @@ signature STR = sig
 end
 structure NetString :> STR = struct
   exception NoColon
+  exception NoComma
   fun ilength a (s,i) =
   let 
     val c = String.sub(s,i)
@@ -17,11 +18,14 @@ structure NetString :> STR = struct
 
   end
   fun length s = ilength 0 (s,0)
-  fun parse s =
-  let
+  fun parse s = let
     val (len,chrs) = length s
-    val str = String.explode s
+    val parsed = String.substring(s,chrs+1,len)
+    val sfx = String.sub(s,len+chrs+1)
   in
-    String.implode(List.take(List.drop(str,chrs+1),len))
+    if sfx = #"," then
+      parsed
+    else
+      raise NoComma
   end
 end
