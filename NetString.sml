@@ -1,8 +1,4 @@
-signature FMT = sig
-  val length : string -> int * int
-  val parse : string -> string
-end
-structure NetString :> STR = struct
+structure NetString :> FMT = struct
   exception NoColon
   exception NoComma
   fun ilength a (s,i) =
