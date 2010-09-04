@@ -1,4 +1,7 @@
 signature FMT = sig
-  val length : string -> int * int
-  val parse : string -> string
+  structure Stream : TEXT_IO
+  type stream
+  val length : Stream.instream -> int
+  val parse : Stream.instream -> string
+  sharing type stream = Stream.instream
 end
