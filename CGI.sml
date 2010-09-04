@@ -3,7 +3,7 @@ signature CGI_TYPE = sig
   val readParams : unit -> env
   val urlDecode  : string -> string
   val urlEncode  : string -> string
-  val pathInfo   : unit   -> string
+  val pathInfo   : unit   -> string list
 end
 functor CGI(M : ORD_MAP where type Key.ord_key = string) :> CGI_TYPE
         where type env = string M.map = struct
@@ -51,7 +51,7 @@ functor CGI(M : ORD_MAP where type Key.ord_key = string) :> CGI_TYPE
   fun pair [x,y] = (x,y)
     | pair x     = raise(Pair)
   fun insert m s = let
-    val (x,y) = pair(String.fields (fn c => c = #"=") s)
+    val (x,y) = pair(List.map urlDecode (String.fields (fn c => c = #"=") s))
   in
     M.insert(m,x,y)
   end
@@ -73,6 +73,6 @@ functor CGI(M : ORD_MAP where type Key.ord_key = string) :> CGI_TYPE
       readPostParams()
   fun pathInfo () = 
     case OS.Process.getEnv "PATH_INFO" of
-         SOME s => s
-       | NONE => "/"
+         SOME s => String.tokens (fn c => c = #"/") s
+       | NONE => []
 end
