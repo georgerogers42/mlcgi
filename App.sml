@@ -1,3 +1,8 @@
+infix 3 o'
+fun x o' y = fn z =>
+  case x z of
+       SOME a => SOME a
+     | NONE   => y z
 signature ERROR_PAGES = sig
   val errorPage : int -> unit -> unit
 end

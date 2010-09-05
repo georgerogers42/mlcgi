@@ -11,7 +11,7 @@ structure Application :> APPLICATION = struct
   end
   type dispatch = string list -> (unit -> unit) option
   fun renderSlash () = print("Content-type: text/html\n\n" ^ "xyz")
-  fun dispatch [] = SOME(renderSlash)
+  fun dispatch [] = ((fn x => NONE) o' (fn y => SOME(renderSlash))) []
     | dispatch x  = SOME(ErrorPages.errorPage 404)
 end
 structure TheApp = App(Application)
