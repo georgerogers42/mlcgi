@@ -4,7 +4,7 @@ fun x o' y = fn z =>
        SOME a => SOME a
      | NONE   => y z
 signature ERROR_PAGES = sig
-  val errorPage : int -> unit -> unit
+  val errorPage : int * exn -> unit -> unit
 end
 structure Page = struct
   type dispatch = string list -> (unit -> unit) option
@@ -19,7 +19,9 @@ signature APP = sig
   val dispatch : unit -> unit
 end
 functor App(A : APPLICATION) = struct
-  fun dispatch () = case A.dispatch(A.Cgi.pathInfo()) of
-                         SOME f => f()
-                       | NONE   => A.ErrorPages.errorPage 404 ()
+  fun dispatch () = 
+    (case A.dispatch(A.Cgi.pathInfo()) of
+             SOME f => f()
+           | NONE   => A.ErrorPages.errorPage(404,Option) ())
+    handle x => A.ErrorPages.errorPage(500,x) ()
 end
