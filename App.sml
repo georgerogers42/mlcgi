@@ -6,6 +6,10 @@ fun x o' y = fn z =>
 signature ERROR_PAGES = sig
   val errorPage : int -> unit -> unit
 end
+signature PAGE = sig
+  type dispatch = string list -> (unit -> unit) option
+  val dispatch : dispatch
+end
 signature APPLICATION = sig
   structure EnvMap : ORD_MAP where type Key.ord_key = string
   structure Cgi : CGI_TYPE
@@ -20,5 +24,5 @@ functor App(A : APPLICATION) =
 struct
   fun dispatch () = case A.dispatch(A.Cgi.pathInfo()) of
                          SOME f => f()
-                       | NONE   => A.ErrorPages.errorPage 500 ()
+                       | NONE   => A.ErrorPages.errorPage 404 ()
 end
