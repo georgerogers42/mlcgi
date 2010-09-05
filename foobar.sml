@@ -5,7 +5,8 @@ end);
 structure TheCgi = CGI(EnviromentMap)
 structure ErrPages :> ERROR_PAGES = struct
   fun errorPage (n,x) () = print("Status: " ^ Int.toString n ^
-                                 "\nContent-type: text/html\n\n" ^ Int.toString n)
+                                 "\nContent-type: text/html\n\n" ^
+                                 Xml.render(Xml.TAG {tag = "a",args=[],body=[Xml.TXT(Int.toString n)]}))
 end
 structure Baz :> APPLICATION = struct
   structure EnvMap = EnviromentMap
