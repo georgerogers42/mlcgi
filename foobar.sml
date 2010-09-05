@@ -23,8 +23,10 @@ structure Baz :> APPLICATION = struct
   structure EnvMap = EnviromentMap
   structure ErrorPages = ErrPages
   structure Cgi = TheCgi
-  type dispatch = string list -> (unit -> unit) option
-  val dispatch = Foo.dispatch o' Bar.dispatch
+  structure Page = Compose(struct
+    structure X = Foo
+    structure Y = Bar
+  end)
 end
 structure TheApp = App(Baz)
 val _ = TheApp.dispatch()
