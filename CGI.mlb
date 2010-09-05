@@ -2,3 +2,4 @@ $(SML_LIB)/basis/basis.mlb
 $(SML_LIB)/smlnj-lib/Util/smlnj-lib.mlb
 CGI.sml
 App.sml
+xml.sml
