@@ -15,7 +15,7 @@ structure Foo :> PAGE = struct
 end
 structure Bar :> PAGE = struct
   type dispatch = string list -> (unit -> unit) option
-  fun foo x () = print("Content=type: text/html\n\n" ^ x)
+  fun foo x () = print("Content-type: text/html\n\n" ^ x)
   fun dispatch ["foo",x] = SOME(foo x)
     | dispatch _         = NONE
 end
